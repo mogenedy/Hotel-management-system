@@ -89,3 +89,4 @@ Route::get('/admin/change/password',[AdminController::class,'AdminPasswordChange
 ->middleware('auth')->middleware('roles:admin');
 
 Route::get('/admin/login',[AdminController::class,'adminLogin'])->name('admin.login');
+Route::get('/admin/login2',[AdminController::class,'adminLogin'])->name('admin.login');
