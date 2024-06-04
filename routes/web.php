@@ -43,6 +43,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('book/area/update', [TeamController::class, 'BookAreaUpdate'])->name('book.area.update');
 });
 
+
 //admin(room type) 
 Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('room/type/list', [RoomTypeController::class, 'RoomTypeList'])->name('room.type.list');
