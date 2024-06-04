@@ -16,7 +16,6 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            //Admin
             [
                 'name' => 'Admin',
                 'email' => 'admin@gmail.com',
@@ -25,7 +24,6 @@ class UsersTableSeeder extends Seeder
                 'status' => 'active'
             ],
             [
-            //User
             'name' => 'User',
             'email' => 'user@gmail.com',
             'password'=>Hash::make('123456789'),

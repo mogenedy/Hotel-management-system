@@ -27,9 +27,9 @@ class AdminController extends Controller
     }
 
     public function AdminProfile(){
-        $id=Auth::user()->id; //check our uer is logged or not
-        $profileData=User::find($id); //get user data
-        return view('admin.admin_profile_view',compact('profileData')); //pass data to view
+        $id=Auth::user()->id; 
+        $profileData=User::find($id); 
+        return view('admin.admin_profile_view',compact('profileData')); 
     }
 
     public function AdminProfileStore(Request $request){
@@ -40,11 +40,21 @@ class AdminController extends Controller
         $data->phone= $request->phone;
         $data->address= $request->address;
 
-    $photo=$request->photo;
+/*
+$photo=$request->photo;
     $photo_name=time().'.'.$photo->getClientOriginalExtension();
     $request->photo->move('upload/admin_images',$photo_name);
     $data->photo=$photo_name;
     $data->save();
+*/
+$file=$request->photo;
+ if($request->file('photo')){
+    $file_name=time().'.'.$file->getClientOriginalExtension();
+    $request->photo->move('upload/admin_images',$file_name);
+    $data->photo=$file_name;
+    $data->save();
+ }
+    
 
 // adding  toaster notifcations
 

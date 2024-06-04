@@ -21,72 +21,68 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [UserController::class, 'userProfile'])->name('user.profile');
     Route::post('/profile/store', [UserController::class, 'userStore'])->name('profile.store');
     Route::post('/password/change/store', [UserController::class, 'PasswordChangeStore'])->name('password.change.store');
-
 });
 
 Route::get('/user/logout', [UserController::class, 'userLogout'])->name('user.logout');
 Route::get('/user/changepassword', [UserController::class, 'userChangePassword'])->name('user.change.password');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 //admin(team) 
-Route::middleware(['auth','roles:admin'])->group(function(){
-Route::get('all/team',[TeamController::class,'AllTeam'])->name('all.team');
-Route::get('add/team',[TeamController::class,'AddTeam'])->name('add.team');
-Route::post('team/store',[TeamController::class,'TeamStore'])->name('team.store');
-Route::get('team/edit/{id}',[TeamController::class,'TeamEdit'])->name('team.edit');
-Route::post('team/update/{id}',[TeamController::class,'TeamUpdate'])->name('team.update');
-Route::get('team/update/{id}',[TeamController::class,'TeamDelete'])->name('team.delete');
+Route::middleware(['auth', 'roles:admin'])->group(function () {
+    Route::get('all/team', [TeamController::class, 'AllTeam'])->name('all.team');
+    Route::get('add/team', [TeamController::class, 'AddTeam'])->name('add.team');
+    Route::post('team/store', [TeamController::class, 'TeamStore'])->name('team.store');
+    Route::get('team/edit/{id}', [TeamController::class, 'TeamEdit'])->name('team.edit');
+    Route::post('team/update/{id}', [TeamController::class, 'TeamUpdate'])->name('team.update');
+    Route::get('team/update/{id}', [TeamController::class, 'TeamDelete'])->name('team.delete');
 });
 //admin(book-area) 
-Route::middleware(['auth','roles:admin'])->group(function(){
-    Route::get('book/area',[TeamController::class,'BookArea'])->name('book.area');
-    Route::post('book/area/update',[TeamController::class,'BookAreaUpdate'])->name('book.area.update');
-
-    });
+Route::middleware(['auth', 'roles:admin'])->group(function () {
+    Route::get('book/area', [TeamController::class, 'BookArea'])->name('book.area');
+    Route::post('book/area/update', [TeamController::class, 'BookAreaUpdate'])->name('book.area.update');
+});
 
 //admin(room type) 
-Route::middleware(['auth','roles:admin'])->group(function(){
-    Route::get('room/type/list',[RoomTypeController::class,'RoomTypeList'])->name('room.type.list');
-    Route::get('add/room/type',[RoomTypeController::class,'AddRoomType'])->name('add.room.type');
-    Route::post('room/type/store',[RoomTypeController::class,'StoreRoomType'])->name('room.type.store');
-    });
+Route::middleware(['auth', 'roles:admin'])->group(function () {
+    Route::get('room/type/list', [RoomTypeController::class, 'RoomTypeList'])->name('room.type.list');
+    Route::get('add/room/type', [RoomTypeController::class, 'AddRoomType'])->name('add.room.type');
+    Route::post('room/type/store', [RoomTypeController::class, 'StoreRoomType'])->name('room.type.store');
+});
 
-    //admin(room) 
-Route::middleware(['auth','roles:admin'])->group(function(){
-    Route::get('room/edit/{id}',[RoomController::class,'RoomEdit'])->name('edit.room');
-    Route::post('/update/room/{id}',[RoomController::class,'UpdateRoom'])->name('update.room');
-    Route::get('/multi/image/delete/{id}', [RoomController::class,'MultiImageDelete'])->name('multi.image.delete');
-    Route::post('/store/room/no/{id}', [RoomController::class,'StoreRoomNumber'])->name('store.room.no');
+//admin(room) 
+Route::middleware(['auth', 'roles:admin'])->group(function () {
+    Route::get('room/edit/{id}', [RoomController::class, 'RoomEdit'])->name('edit.room');
+    Route::post('/update/room/{id}', [RoomController::class, 'UpdateRoom'])->name('update.room');
+    Route::get('/multi/image/delete/{id}', [RoomController::class, 'MultiImageDelete'])->name('multi.image.delete');
+    Route::post('/store/room/no/{id}', [RoomController::class, 'StoreRoomNumber'])->name('store.room.no');
 
-    Route::get('/edit/roomno/{id}', [RoomController::class,'EditRoomNumber'])->name('edit.roomno');
-    Route::post('/update/roomno/{id}', [RoomController::class,'UpdateRoomNumber'])->name('update.roomno');
-    Route::get('/delete/roomno/{id}', [RoomController::class,'DeleteRoomNumber'])->name('delete.roomno');
-    Route::get('/delete/room/{id}', [RoomController::class,'DeleteRoom'])->name('delete.room');
+    Route::get('/edit/roomno/{id}', [RoomController::class, 'EditRoomNumber'])->name('edit.roomno');
+    Route::post('/update/roomno/{id}', [RoomController::class, 'UpdateRoomNumber'])->name('update.roomno');
+    Route::get('/delete/roomno/{id}', [RoomController::class, 'DeleteRoomNumber'])->name('delete.roomno');
+    Route::get('/delete/room/{id}', [RoomController::class, 'DeleteRoom'])->name('delete.room');
+});
 
-    });
+
+//admin(auth) 
+Route::middleware(['auth', 'roles:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+});
 
 
-    //admin(auth) 
+Route::get('/admin/logout', [AdminController::class, 'AdminLogout'])->name('admin.logout')
+    ->middleware('auth')->middleware('roles:admin');
 
-Route::get('/admin/dashboard',[AdminController::class,'AdminDashboard'])->name('admin.dashboard')
-->middleware('auth')
-->middleware('roles:admin');
+Route::get('/admin/profile', [AdminController::class, 'AdminProfile'])->name('admin.profile')
+    ->middleware('auth')->middleware('roles:admin');
 
-Route::get('/admin/logout',[AdminController::class,'AdminLogout'])->name('admin.logout')
-->middleware('auth')->middleware('roles:admin');
+Route::post('/admin/profile/store', [AdminController::class, 'AdminProfileStore'])->name('admin.profile.store')
+    ->middleware('auth')->middleware('roles:admin');
 
-Route::get('/admin/profile',[AdminController::class,'AdminProfile'])->name('admin.profile')
-->middleware('auth')->middleware('roles:admin');
+Route::post('/admin/password/update', [AdminController::class, 'AdminPasswordUpdate'])->name('admin.password.update')
+    ->middleware('auth')->middleware('roles:admin');
 
-Route::post('/admin/profile/store',[AdminController::class,'AdminProfileStore'])->name('admin.profile.store')
-->middleware('auth')->middleware('roles:admin');
+Route::get('/admin/change/password', [AdminController::class, 'AdminPasswordChange'])->name('admin.change.password')
+    ->middleware('auth')->middleware('roles:admin');
 
-Route::post('/admin/password/update',[AdminController::class,'AdminPasswordUpdate'])->name('admin.password.update')
-->middleware('auth')->middleware('roles:admin');
-
-Route::get('/admin/change/password',[AdminController::class,'AdminPasswordChange'])->name('admin.change.password')
-->middleware('auth')->middleware('roles:admin');
-
-Route::get('/admin/login',[AdminController::class,'adminLogin'])->name('admin.login');
-Route::get('/admin/login2',[AdminController::class,'adminLogin'])->name('admin.login');
+Route::get('/admin/login', [AdminController::class, 'adminLogin'])->name('admin.login');

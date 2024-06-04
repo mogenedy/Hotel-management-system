@@ -1,5 +1,6 @@
 @extends('admin.admin_dashboard')
 @section('admin')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <div class="page-content">
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
             <div class="breadcrumb-title pe-3">User Profile</div>
@@ -35,8 +36,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex flex-column align-items-center text-center">
-                                    <img src="{{ (!empty($profileData->photo)) ?
-                                    url('upload/admin_images/'.$profileData->photo) : url('upload/no_image.jpg') }}"
+                                    <img src="{{ !empty($profileData->photo) ? url('upload/admin_images/' . $profileData->photo) : url('upload/no_image.jpg') }}"
                                         alt="Admin" class="rounded-circle p-1 bg-primary" width="110">
 
 
@@ -99,78 +99,93 @@
                     </div>
                     <div class="col-lg-8">
                         <div class="card">
+{{-- form   --}}
+                            <form action="{{ route('admin.profile.store') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Full Name</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="name"
+                                                value="{{ $profileData->name }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Email</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="email"
+                                                value="{{ $profileData->email }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Phone</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" name="phone" class="form-control"
+                                                value="{{ $profileData->Phone }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">address</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" name="address" class="form-control"
+                                                value="{{ $profileData->address }}" />
+                                        </div>
+                                    </div>
 
-    <form action="{{route('admin.profile.store')}}" method="POST" enctype="multipart/form-data">
-     @csrf
-    <div class="card-body">
-        <div class="row mb-3">
-            <div class="col-sm-3">
-                <h6 class="mb-0">Full Name</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-        <input type="text" class="form-control" name="name"
-                    value="{{ $profileData->name }}" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-sm-3">
-                <h6 class="mb-0">Email</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-                <input type="text" class="form-control" name="email"
-                    value="{{ $profileData->email }}" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-sm-3">
-                <h6 class="mb-0">Phone</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-                <input type="text" name="phone" class="form-control"
-                    value="{{ $profileData->Phone }}" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-sm-3">
-                <h6 class="mb-0">address</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-                <input type="text" name="address" class="form-control"
-                    value="{{ $profileData->address }}" />
-            </div>
-        </div>
 
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">photo</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="file" class="form-control" name="photo" id="image" />
+                                        </div>
+                                    </div>
 
-        <div class="row mb-3">
-            <div class="col-sm-3">
-                <h6 class="mb-0">photo</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-                <input type="file" class="form-control" name="photo" id="image" />
-            </div>
-        </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0"></h6>
+                                        </div>
 
-        <div class="row mb-3">
-            <div class="col-sm-3">
-                <h6 class="mb-0"></h6>
-            </div>
-            
-            <div class="col-sm-9 text-secondary">
-                <img id="showImage"
-                    src="{{(!empty($ProfileData->photo)) ? url('upload/admin_images/' . $profileData->photo) : url('upload/no_image.jpg') }}"
-                    alt="Admin" class="rounded-circle p-1 bg-primary" width="80">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-9 text-secondary">
-                <input type="submit" class="btn btn-primary px-4" value="Save Changes" />
-            </div>
-        </div>
-    </div>
-</form>
+                                        <div class="col-sm-9 text-secondary">
+                                            <img id="showImage"
+                                                src="{{ !empty($ProfileData->photo) ? url('upload/admin_images/' . $profileData->photo) : url('upload/no_image.jpg') }}"
+                                                alt="Admin" class="rounded-circle p-1 bg-primary" width="80">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="submit" class="btn btn-primary px-4" value="Save Changes" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+{{-- end-form   --}}
 
                         </div>
                     </div>
-                    @include('admin.components.image-upload')
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('#image').change(function(e) {
+                                var reader = new FileReader();
+                                reader.onload = function(e) {
+                                    $('#showImage').attr('src', e.target.result);
+                                }
+                                reader.readAsDataURL(e.target.files['0']);
+                            });
+                        });
+                    </script>
+
+
+                    {{-- @include('admin.components.image-upload') --}}
                 @endsection

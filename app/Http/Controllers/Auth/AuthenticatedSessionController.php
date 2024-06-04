@@ -28,7 +28,6 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        //make admin and users new routes redirect
 
         $username=Auth::user()->name;
         $notification=array(
@@ -36,14 +35,14 @@ class AuthenticatedSessionController extends Controller
             'alert-type'=>'info'
          );
 
+
+     //make admin and users new routes redirect
         $url='';
         if(Auth::user()->role =='admin'){
             $url='admin/dashboard';
 
         }elseif (Auth::user()->role =='user') {
             $url='dashboard';
-
-
         }
         return redirect()->intended($url)->with($notification);
     }

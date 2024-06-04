@@ -1,0 +1,24 @@
+@php
+$bookarea = App\Models\BookArea::find(1) ?? new App\Models\BookArea;
+@endphp
+@isset($bookarea)
+<div class="section-title">
+    <span class="sp-color">{{ $bookarea->short_title }}</span>
+    <h2>{{ $bookarea->main_title }}</h2>
+    <p>
+        {{ $bookarea->short_desc }}
+    </p>
+</div>
+@endisset
+                    <a href="{{ $bookarea->link_url }}" class="default-btn btn-bg-three">Quick Booking</a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="book-img-2">
+                    <img src="{{ asset($bookarea->image) }}" alt="Images">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

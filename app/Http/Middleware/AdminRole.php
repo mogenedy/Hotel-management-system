@@ -17,14 +17,15 @@ class AdminRole
      */
     public function handle(Request $request, Closure $next,$role)
     {
-        //$role variable contains admin and user roles ..$role could be any role that you want to check against.
-        // if(Auth::user()->role !== $role) {
-        //     return redirect('dashboard');
-        // }
-        //if (!Auth::user()->hasRole('admin'))
-        if(Auth::user()->role !== 'admin') {
+        /*
+         if(Auth::user()->role !== 'admin') {
             return redirect('dashboard');
         }
+        */
+        if(Auth::user()->role !== $role) {
+            return redirect('dashboard');
+        }
+        
         return $next($request);
     }
 }
